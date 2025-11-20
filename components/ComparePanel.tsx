@@ -211,5 +211,3 @@ export default function ComparePanel({ symbols }: ComparePanelProps) {
     </div>
   );
 }
-
-export default ComparePanel;
