@@ -57,32 +57,28 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors">
       {/* Header */}
-      <header className="bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm border-b border-gray-200 dark:border-slate-700 transition-colors">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                📈 Borsa Dashboard
+      <header className="bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm border-b border-gray-200 dark:border-slate-700 transition-colors sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 md:py-6">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl md:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                📈 <span className="truncate">Borsa Dashboard</span>
               </h1>
-              <p className="text-gray-600 dark:text-slate-400 mt-1">Türk Borsası Canlı Takip</p>
+              <p className="text-xs md:text-sm text-gray-600 dark:text-slate-400 mt-1 hidden sm:block">
+                Türk Borsası Canlı Takip
+              </p>
             </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? (
-                  <Sun className="w-5 h-5 text-yellow-500" />
-                ) : (
-                  <Moon className="w-5 h-5 text-gray-700" />
-                )}
-              </button>
-              <div className="text-right">
-                <p className="text-xs text-gray-500 dark:text-slate-500">Powered by</p>
-                <p className="text-sm font-semibold text-gray-700 dark:text-slate-300">borsa-api</p>
-              </div>
-            </div>
+            <button
+              onClick={toggleTheme}
+              className="p-2 md:p-3 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex-shrink-0"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-yellow-500" />
+              ) : (
+                <Moon className="w-5 h-5 text-gray-700" />
+              )}
+            </button>
           </div>
         </div>
       </header>
@@ -119,7 +115,7 @@ export default function Home() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
           <TabButton
             active={activeTab === 'popular'}
             onClick={() => setActiveTab('popular')}
@@ -142,13 +138,13 @@ export default function Home() {
             active={activeTab === 'favorites'}
             onClick={() => setActiveTab('favorites')}
             icon={<Star className="w-4 h-4" />}
-            label={`Favoriler ${favorites.length > 0 ? `(${favorites.length})` : ''}`}
+            label={`Favoriler${favorites.length > 0 ? ` (${favorites.length})` : ''}`}
           />
           <TabButton
             active={activeTab === 'watchlist'}
             onClick={() => setActiveTab('watchlist')}
             icon={<Star className="w-4 h-4 fill-current" />}
-            label="İzleme Listesi"
+            label="İzleme"
           />
         </div>
 
@@ -197,42 +193,21 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-12 py-8 border-t border-gray-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 transition-colors">
+      <footer className="mt-12 py-6 border-t border-gray-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 transition-colors">
         <div className="container mx-auto px-4 text-center">
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm mb-3">
+          <p className="text-sm text-gray-600 dark:text-slate-400 mb-2">
+            Powered by{' '}
             <a 
               href="https://www.npmjs.com/package/borsa-api" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-blue-600 dark:text-blue-400 hover:underline font-semibold"
             >
-              📦 borsa-api
+              borsa-api
             </a>
-            <span className="text-gray-300 dark:text-slate-700">•</span>
-            <a 
-              href="https://github.com/ibidi/bist" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            >
-              <Github className="w-4 h-4 inline mr-1" />
-              GitHub
-            </a>
-            <span className="text-gray-300 dark:text-slate-700">•</span>
-            <a 
-              href="https://github.com/ibidi" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            >
-              @ibidi
-            </a>
-          </div>
-          <p className="text-xs text-gray-500 dark:text-slate-500 mb-1">
-            ⚠️ Gecikmeli veri - Eğitim amaçlıdır
           </p>
-          <p className="text-xs text-gray-400 dark:text-slate-600">
-            Next.js 16 • React 19
+          <p className="text-xs text-gray-500 dark:text-slate-500">
+            ⚠️ Gecikmeli veri - Sadece eğitim amaçlıdır - Yatırım tavsiyesi değildir
           </p>
         </div>
       </footer>
@@ -244,14 +219,15 @@ function TabButton({ active, onClick, icon, label }: any) {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+      className={`flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap text-sm md:text-base ${
         active
           ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
           : 'bg-white dark:bg-slate-800/50 text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/50 hover:text-gray-900 dark:hover:text-slate-300 border border-gray-200 dark:border-slate-700'
       }`}
     >
       {icon}
-      {label}
+      <span className="hidden sm:inline">{label}</span>
+      <span className="sm:hidden">{label.split(' ')[0]}</span>
     </button>
   );
 }

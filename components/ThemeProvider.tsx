@@ -20,20 +20,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) {
       setTheme(savedTheme);
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     } else {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
+      const initialTheme = prefersDark ? 'dark' : 'light';
+      setTheme(initialTheme);
+      document.documentElement.classList.toggle('dark', prefersDark);
     }
   }, []);
 
   useEffect(() => {
     if (mounted) {
       localStorage.setItem('theme', theme);
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.classList.toggle('dark', theme === 'dark');
     }
   }, [theme, mounted]);
 
