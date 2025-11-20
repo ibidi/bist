@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBorsaAPI } from '@/lib/borsa-api-wrapper';
+import { searchStock } from '@/lib/borsa-api-wrapper';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -13,10 +13,10 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const api = getBorsaAPI();
-    const results = await api.searchStock(query);
+    const results = await searchStock(query);
     return NextResponse.json(results);
   } catch (error: any) {
+    console.error('API Error:', error);
     return NextResponse.json(
       { error: error.message || 'Failed to search stocks' },
       { status: 500 }

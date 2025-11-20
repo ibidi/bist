@@ -1,30 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBorsaAPI } from '@/lib/borsa-api-wrapper';
+import { getPopularStocks, getTopGainers, getTopLosers } from '@/lib/borsa-api-wrapper';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const type = searchParams.get('type') || 'popular';
 
   try {
-    const api = getBorsaAPI();
     let stocks;
 
     switch (type) {
       case 'popular':
-        stocks = await api.getPopularStocks();
+        stocks = await getPopularStocks();
         break;
       case 'gainers':
-        stocks = await api.getTopGainers(10);
+        stocks = await getTopGainers(10);
         break;
       case 'losers':
-        stocks = await api.getTopLosers(10);
+        stocks = await getTopLosers(10);
         break;
       default:
-        stocks = await api.getPopularStocks();
+        stocks = await getPopularStocks();
     }
 
     return NextResponse.json(stocks);
   } catch (error: any) {
+    console.error('API Error:', error);
     return NextResponse.json(
       { error: error.message || 'Failed to fetch stocks' },
       { status: 500 }
