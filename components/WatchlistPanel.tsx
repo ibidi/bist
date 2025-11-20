@@ -62,9 +62,9 @@ export default function WatchlistPanel({ onRefresh }: { onRefresh: () => void })
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="bg-slate-800/50 rounded-lg p-6 animate-pulse">
-            <div className="h-6 bg-slate-700 rounded w-1/2 mb-4"></div>
-            <div className="h-8 bg-slate-700 rounded w-3/4"></div>
+          <div key={i} className="bg-white dark:bg-slate-800/50 rounded-lg p-6 animate-pulse border border-gray-200 dark:border-slate-700">
+            <div className="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/2 mb-4"></div>
+            <div className="h-8 bg-gray-200 dark:bg-slate-700 rounded w-3/4"></div>
           </div>
         ))}
       </div>
@@ -74,7 +74,7 @@ export default function WatchlistPanel({ onRefresh }: { onRefresh: () => void })
   return (
     <div>
       {/* Add to Watchlist */}
-      <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-slate-700 mb-6">
+      <div className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-gray-200 dark:border-slate-700 mb-6">
         <div className="flex gap-2">
           <input
             type="text"
@@ -82,7 +82,7 @@ export default function WatchlistPanel({ onRefresh }: { onRefresh: () => void })
             onChange={(e) => setNewSymbol(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addToWatchlist()}
             placeholder="Hisse sembolü (örn: THYAO)"
-            className="flex-1 bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+            className="flex-1 bg-gray-50 dark:bg-slate-900/50 border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
           />
           <button
             onClick={addToWatchlist}
@@ -96,7 +96,7 @@ export default function WatchlistPanel({ onRefresh }: { onRefresh: () => void })
 
       {/* Watchlist Items */}
       {watchlist.length === 0 ? (
-        <div className="text-center py-12 text-slate-400">
+        <div className="text-center py-12 text-gray-500 dark:text-slate-400">
           <p className="text-lg mb-2">İzleme listesi boş</p>
           <p className="text-sm">Yukarıdan hisse ekleyerek başlayın</p>
         </div>
