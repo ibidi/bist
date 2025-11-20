@@ -65,20 +65,33 @@ export default function Home() {
                 📈 <span className="truncate">Borsa Dashboard</span>
               </h1>
               <p className="text-xs md:text-sm text-gray-600 dark:text-slate-400 mt-1 hidden sm:block">
-                Türk Borsası Canlı Takip
+                ⚠️ Gecikmeli veri - Sadece eğitim amaçlıdır
               </p>
             </div>
-            <button
-              onClick={toggleTheme}
-              className="p-2 md:p-3 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex-shrink-0"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-yellow-500" />
-              ) : (
-                <Moon className="w-5 h-5 text-gray-700" />
-              )}
-            </button>
+            <div className="flex items-center gap-3 md:gap-4">
+              <button
+                onClick={toggleTheme}
+                className="p-2 md:p-3 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex-shrink-0"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5 text-yellow-500" />
+                ) : (
+                  <Moon className="w-5 h-5 text-gray-700" />
+                )}
+              </button>
+              <div className="text-right hidden md:block">
+                <p className="text-xs text-gray-500 dark:text-slate-500">Powered by</p>
+                <a 
+                  href="https://www.npmjs.com/package/borsa-api" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  borsa-api
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </header>
