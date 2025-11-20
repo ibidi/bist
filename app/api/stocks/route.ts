@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-const BorsaAPI = require('borsa-api');
-
-const api = new BorsaAPI();
+import { getBorsaAPI } from '@/lib/borsa-api-wrapper';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const type = searchParams.get('type') || 'popular';
 
   try {
+    const api = getBorsaAPI();
     let stocks;
 
     switch (type) {

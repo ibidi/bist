@@ -16,11 +16,25 @@ export default function WatchlistPanel({ onRefresh }: { onRefresh: () => void })
   const fetchWatchlist = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/watchlist');
-      const data = await response.json();
-      setWatchlist(data);
+      // Get watchlist from localStorage
+      const saved = localStorage.getItem('watchlist');
+      const symbols = saved ? JSON.parse(saved) : [];
+      
+      if (symbols.length === 0) {
+        setWatchlist([]);
+        setLoading(false);
+        return;
+      }
+
+      // Fetch stock data for each symbol
+      const promises = symbols.map((symbol: string) =>
+        fetch(`/api/stock/${symbol}`).then(res => res.json())
+      );
+      const data = await Promise.all(promises);
+      setWatchlist(data.filter((s: any) => s && !s.error));
     } catch (error) {
       console.error('Error fetching watchlist:', error);
+      setWatchlist([]);
     } finally {
       setLoading(false);
     }
@@ -30,13 +44,12 @@ export default function WatchlistPanel({ onRefresh }: { onRefresh: () => void })
     if (!newSymbol.trim()) return;
 
     try {
-      const response = await fetch('/api/watchlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symbol: newSymbol.toUpperCase() }),
-      });
-
-      if (response.ok) {
+      const saved = localStorage.getItem('watchlist');
+      const symbols = saved ? JSON.parse(saved) : [];
+      
+      if (!symbols.includes(newSymbol.toUpperCase())) {
+        symbols.push(newSymbol.toUpperCase());
+        localStorage.setItem('watchlist', JSON.stringify(symbols));
         setNewSymbol('');
         fetchWatchlist();
         onRefresh();
@@ -48,9 +61,10 @@ export default function WatchlistPanel({ onRefresh }: { onRefresh: () => void })
 
   const removeFromWatchlist = async (symbol: string) => {
     try {
-      await fetch(`/api/watchlist?symbol=${symbol}`, {
-        method: 'DELETE',
-      });
+      const saved = localStorage.getItem('watchlist');
+      const symbols = saved ? JSON.parse(saved) : [];
+      const filtered = symbols.filter((s: string) => s !== symbol);
+      localStorage.setItem('watchlist', JSON.stringify(filtered));
       fetchWatchlist();
       onRefresh();
     } catch (error) {
