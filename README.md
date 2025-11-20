@@ -1,0 +1,59 @@
+# 📈 Borsa Dashboard
+
+Modern ve şık bir Türk Borsası (BIST) takip uygulaması. [borsa-api](https://www.npmjs.com/package/borsa-api) kullanılarak geliştirilmiştir.
+
+## ✨ Özellikler
+
+- 📊 **Popüler Hisseler** - En çok işlem gören hisseleri görüntüle
+- 📈 **En Çok Yükselenler** - Günün kazananları
+- 📉 **En Çok Düşenler** - Günün kaybedenleri
+- ⭐ **İzleme Listesi** - Favori hisselerinizi takip edin
+- 🔍 **Arama** - Türkçe karakter desteği ile hisse arama
+- 🎨 **Modern UI** - Tailwind CSS ile şık arayüz
+- ⚡ **Hızlı** - Next.js 15 ve React 19 ile optimize edilmiş
+
+## 🚀 Kurulum
+
+```bash
+# Bağımlılıkları yükle
+npm install
+
+# Geliştirme sunucusunu başlat
+npm run dev
+```
+
+Tarayıcınızda [http://localhost:3000](http://localhost:3000) adresini açın.
+
+## 🛠️ Teknolojiler
+
+- **Next.js 15** - React framework
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **borsa-api** - BIST data provider
+- **Lucide React** - Icons
+
+## 📦 Kullanılan Paketler
+
+- `borsa-api` - Türk borsası API wrapper
+- `recharts` - Grafik ve chart'lar için (gelecek özellikler)
+- `lucide-react` - Modern ikonlar
+
+## ⚠️ Önemli Notlar
+
+- Bu uygulama **gecikmeli veri** kullanır
+- **Sadece eğitim amaçlıdır**
+- **Yatırım tavsiyesi değildir**
+- Gerçek zamanlı veri için BIST lisansı gereklidir
+
+## 📝 Lisans
+
+MIT
+
+## 👨‍💻 Geliştirici
+
+İhsan Baki Doğan - [@ibidi](https://github.com/ibidi)
+
+---
+
+**Powered by [borsa-api](https://www.npmjs.com/package/borsa-api)**
