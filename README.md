@@ -12,7 +12,7 @@ Modern ve şık bir Türk Borsası (BIST) takip uygulaması. [borsa-api](https:/
 - 🖼️ **Şirket Logoları** - Otomatik logo gösterimi (60+ şirket)
 - 🌓 **Light/Dark Mode** - Tema değiştirme desteği
 - 🎨 **Modern UI** - Tailwind CSS v4 ile şık arayüz
-- ⚡ **Hızlı** - Next.js 15 ve React 19 ile optimize edilmiş
+- ⚡ **Hızlı** - Next.js 16 ve React 19 ile optimize edilmiş
 - 📱 **Responsive** - Mobil, tablet ve desktop uyumlu
 
 ## 🚀 Kurulum
@@ -29,7 +29,7 @@ Tarayıcınızda [http://localhost:3000](http://localhost:3000) adresini açın.
 
 ## 🛠️ Teknolojiler
 
-- **Next.js 15** - React framework (App Router)
+- **Next.js 16** - React framework (App Router)
 - **React 19** - UI library
 - **TypeScript** - Type safety
 - **Tailwind CSS v4** - Modern styling

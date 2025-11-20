@@ -1,23 +1,47 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, Activity, Star, Moon, Sun, Github, Linkedin, Twitter } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, Star, Moon, Sun, Github, GitCompare, X } from 'lucide-react';
 import StockCard from '@/components/StockCard';
 import WatchlistPanel from '@/components/WatchlistPanel';
 import SearchPanel from '@/components/SearchPanel';
+import ComparePanel from '@/components/ComparePanel';
 import { useTheme } from '@/components/ThemeProvider';
+import { useFavorites } from '@/lib/favorites-context';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'popular' | 'gainers' | 'losers' | 'watchlist'>('popular');
+  const [activeTab, setActiveTab] = useState<'popular' | 'gainers' | 'losers' | 'watchlist' | 'favorites'>('popular');
   const [stocks, setStocks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { theme, toggleTheme } = useTheme();
+  const { compareList, clearCompare, favorites } = useFavorites();
 
   useEffect(() => {
     fetchStocks();
   }, [activeTab]);
 
   const fetchStocks = async () => {
+    if (activeTab === 'favorites') {
+      if (favorites.length === 0) {
+        setStocks([]);
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      try {
+        const promises = favorites.map(symbol => 
+          fetch(`/api/stock/${symbol}`).then(res => res.json())
+        );
+        const data = await Promise.all(promises);
+        setStocks(data.filter(s => s && !s.error));
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch(`/api/stocks?type=${activeTab}`);
@@ -64,6 +88,36 @@ export default function Home() {
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        {/* Compare Bar */}
+        {compareList.length > 0 && (
+          <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <GitCompare className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                  Karşılaştırma: {compareList.join(' vs ')} {compareList.length === 1 && '(Bir hisse daha seçin)'}
+                </span>
+              </div>
+              <div className="flex gap-2">
+                {compareList.length === 2 && (
+                  <button
+                    onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+                    className="text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  >
+                    Karşılaştır
+                  </button>
+                )}
+                <button
+                  onClick={clearCompare}
+                  className="p-2 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-lg transition-colors"
+                >
+                  <X className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Tabs */}
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           <TabButton
@@ -85,9 +139,15 @@ export default function Home() {
             label="Düşenler"
           />
           <TabButton
+            active={activeTab === 'favorites'}
+            onClick={() => setActiveTab('favorites')}
+            icon={<Star className="w-4 h-4" />}
+            label={`Favoriler ${favorites.length > 0 ? `(${favorites.length})` : ''}`}
+          />
+          <TabButton
             active={activeTab === 'watchlist'}
             onClick={() => setActiveTab('watchlist')}
-            icon={<Star className="w-4 h-4" />}
+            icon={<Star className="w-4 h-4 fill-current" />}
             label="İzleme Listesi"
           />
         </div>
@@ -99,6 +159,12 @@ export default function Home() {
         <div className="mt-6">
           {activeTab === 'watchlist' ? (
             <WatchlistPanel onRefresh={fetchStocks} />
+          ) : activeTab === 'favorites' && favorites.length === 0 ? (
+            <div className="text-center py-12">
+              <Star className="w-16 h-16 mx-auto text-gray-300 dark:text-slate-600 mb-4" />
+              <p className="text-gray-500 dark:text-slate-400 text-lg mb-2">Henüz favori hisse eklemediniz</p>
+              <p className="text-gray-400 dark:text-slate-500 text-sm">Hisselerin üzerindeki yıldız ikonuna tıklayarak favorilere ekleyin</p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {loading ? (
@@ -121,102 +187,53 @@ export default function Home() {
             </div>
           )}
         </div>
+
+        {/* Compare Panel */}
+        {compareList.length === 2 && (
+          <div className="mt-8">
+            <ComparePanel symbols={compareList} />
+          </div>
+        )}
       </div>
 
       {/* Footer */}
       <footer className="mt-12 py-8 border-t border-gray-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 transition-colors">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
-            {/* About */}
-            <div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-3">Borsa Dashboard</h3>
-              <p className="text-sm text-gray-600 dark:text-slate-400">
-                Modern ve şık bir Türk Borsası takip uygulaması. borsa-api npm paketi kullanılarak geliştirilmiştir.
-              </p>
-            </div>
-
-            {/* Links */}
-            <div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-3">Projeler</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a 
-                    href="https://www.npmjs.com/package/borsa-api" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  >
-                    📦 borsa-api (NPM)
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://github.com/ibidi/borsa-api" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  >
-                    💻 GitHub Repository
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://github.com/ibidi/borsa-dashboard" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  >
-                    🎨 Dashboard Source
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Developer */}
-            <div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-3">Geliştirici</h3>
-              <p className="text-sm text-gray-600 dark:text-slate-400 mb-3">İhsan Baki Doğan</p>
-              <div className="flex gap-3">
-                <a 
-                  href="https://github.com/ibidi" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-                  aria-label="GitHub"
-                >
-                  <Github className="w-5 h-5 text-gray-700 dark:text-slate-300" />
-                </a>
-                <a 
-                  href="https://linkedin.com/in/ibidi" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="w-5 h-5 text-gray-700 dark:text-slate-300" />
-                </a>
-                <a 
-                  href="https://x.com/ihsanbakidogan" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-                  aria-label="X (Twitter)"
-                >
-                  <Twitter className="w-5 h-5 text-gray-700 dark:text-slate-300" />
-                </a>
-              </div>
-            </div>
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm mb-3">
+            <a 
+              href="https://www.npmjs.com/package/borsa-api" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              📦 borsa-api
+            </a>
+            <span className="text-gray-300 dark:text-slate-700">•</span>
+            <a 
+              href="https://github.com/ibidi/bist" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              <Github className="w-4 h-4 inline mr-1" />
+              GitHub
+            </a>
+            <span className="text-gray-300 dark:text-slate-700">•</span>
+            <a 
+              href="https://github.com/ibidi" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              @ibidi
+            </a>
           </div>
-
-          {/* Disclaimer */}
-          <div className="pt-6 border-t border-gray-200 dark:border-slate-800 text-center">
-            <p className="text-sm text-gray-600 dark:text-slate-400 mb-2">
-              ⚠️ Gecikmeli veri - Sadece eğitim amaçlıdır - Yatırım tavsiyesi değildir
-            </p>
-            <p className="text-xs text-gray-500 dark:text-slate-500">
-              Made with ❤️ using Next.js 15, React 19, and borsa-api
-            </p>
-          </div>
+          <p className="text-xs text-gray-500 dark:text-slate-500 mb-1">
+            ⚠️ Gecikmeli veri - Eğitim amaçlıdır
+          </p>
+          <p className="text-xs text-gray-400 dark:text-slate-600">
+            Next.js 16 • React 19
+          </p>
         </div>
       </footer>
     </div>
