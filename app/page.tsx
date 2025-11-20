@@ -128,7 +128,7 @@ export default function Home() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
           <TabButton
             active={activeTab === 'popular'}
             onClick={() => setActiveTab('popular')}
@@ -232,15 +232,14 @@ function TabButton({ active, onClick, icon, label }: any) {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap text-sm md:text-base ${
+      className={`flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap text-sm md:text-base flex-shrink-0 ${
         active
           ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
           : 'bg-white dark:bg-slate-800/50 text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/50 hover:text-gray-900 dark:hover:text-slate-300 border border-gray-200 dark:border-slate-700'
       }`}
     >
       {icon}
-      <span className="hidden sm:inline">{label}</span>
-      <span className="sm:hidden">{label.split(' ')[0]}</span>
+      <span>{label}</span>
     </button>
   );
 }
