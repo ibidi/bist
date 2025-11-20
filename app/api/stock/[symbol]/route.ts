@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getStock } from '@/lib/borsa-api-wrapper';
+import { getBorsaAPI } from '@/lib/borsa-api-wrapper';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ symbol: string }> }
 ) {
   try {
+    const api = getBorsaAPI();
     const { symbol } = await params;
-    const stock = await getStock(symbol);
+    const stock = await api.getStock(symbol);
     return NextResponse.json(stock);
   } catch (error: any) {
     console.error('API Error:', error);
