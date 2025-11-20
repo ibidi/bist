@@ -73,10 +73,7 @@ export default function ComparePanel({ symbols }: ComparePanelProps) {
   const changeDiff = stock1.changePercent - stock2.changePercent;
 
   return (
-    <div className="bg-white dark:bg-slate-800/50 rounded-lg p-6 border border-gray-200 dark:border-slate-700">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-        ⚖️ Hisse Karşılaştırma
-      </h2>
+    <div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Stock 1 */}
@@ -214,3 +211,5 @@ export default function ComparePanel({ symbols }: ComparePanelProps) {
     </div>
   );
 }
+
+export default ComparePanel;

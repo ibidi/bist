@@ -13,6 +13,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'popular' | 'gainers' | 'losers' | 'watchlist' | 'favorites'>('popular');
   const [stocks, setStocks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCompareModal, setShowCompareModal] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { compareList, clearCompare, favorites } = useFavorites();
 
@@ -55,7 +56,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors flex flex-col">
       {/* Header */}
       <header className="bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm border-b border-gray-200 dark:border-slate-700 transition-colors sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 md:py-6">
@@ -96,7 +97,7 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 flex-1">
         {/* Compare Bar */}
         {compareList.length > 0 && (
           <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
@@ -110,7 +111,7 @@ export default function Home() {
               <div className="flex gap-2">
                 {compareList.length === 2 && (
                   <button
-                    onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+                    onClick={() => setShowCompareModal(true)}
                     className="text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                   >
                     Karşılaştır
@@ -197,13 +198,36 @@ export default function Home() {
           )}
         </div>
 
-        {/* Compare Panel */}
-        {compareList.length === 2 && (
-          <div className="mt-8">
-            <ComparePanel symbols={compareList} />
-          </div>
-        )}
       </div>
+
+      {/* Compare Modal */}
+      {showCompareModal && compareList.length === 2 && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowCompareModal(false)}
+        >
+          <div 
+            className="bg-white dark:bg-slate-800 rounded-lg shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 p-4 flex items-center justify-between z-10">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <GitCompare className="w-6 h-6" />
+                Hisse Karşılaştırma
+              </h2>
+              <button
+                onClick={() => setShowCompareModal(false)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+              </button>
+            </div>
+            <div className="p-4 md:p-6">
+              <ComparePanel symbols={compareList} />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="mt-12 py-6 border-t border-gray-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 transition-colors">
