@@ -9,6 +9,7 @@ Modern ve şık bir Türk Borsası (BIST) takip uygulaması. [borsa-api](https:/
 - 📉 **En Çok Düşenler** - Günün kaybedenleri
 - ⭐ **İzleme Listesi** - Favori hisselerinizi takip edin
 - 🔍 **Arama** - Türkçe karakter desteği ile hisse arama
+- 🖼️ **Şirket Logoları** - Otomatik logo gösterimi (60+ şirket)
 - 🎨 **Modern UI** - Tailwind CSS ile şık arayüz
 - ⚡ **Hızlı** - Next.js 15 ve React 19 ile optimize edilmiş
 

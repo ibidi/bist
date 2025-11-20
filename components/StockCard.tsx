@@ -1,4 +1,9 @@
+'use client';
+
 import { TrendingUp, TrendingDown, Star } from 'lucide-react';
+import { getLogoWithFallback } from '@/lib/logo-utils';
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface StockCardProps {
   stock: {
@@ -13,13 +18,27 @@ interface StockCardProps {
 
 export default function StockCard({ stock }: StockCardProps) {
   const isPositive = stock.change >= 0;
+  const logos = getLogoWithFallback(stock.symbol);
+  const [imgSrc, setImgSrc] = useState(logos.primary);
 
   return (
     <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border border-slate-700 hover:border-slate-600 transition-all hover:shadow-lg hover:shadow-slate-900/50">
       <div className="flex items-start justify-between mb-4">
-        <div>
-          <h3 className="text-xl font-bold text-white">{stock.symbol}</h3>
-          <p className="text-sm text-slate-400 truncate max-w-[200px]">{stock.name}</p>
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-lg bg-slate-700/50 flex items-center justify-center overflow-hidden">
+            <Image
+              src={imgSrc}
+              alt={stock.symbol}
+              width={48}
+              height={48}
+              className="object-contain"
+              onError={() => setImgSrc(logos.fallback)}
+            />
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-white">{stock.symbol}</h3>
+            <p className="text-sm text-slate-400 truncate max-w-[200px]">{stock.name}</p>
+          </div>
         </div>
         <button className="text-slate-400 hover:text-yellow-400 transition-colors">
           <Star className="w-5 h-5" />
