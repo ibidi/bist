@@ -62,6 +62,20 @@ Each stock card displays:
 - Trading volume
 - High/Low prices
 - Company logo and name
+- **Detailed Analysis** button for in-depth view
+
+### 📊 Advanced Analytics (NEW!)
+- **Historical Charts** - Interactive price history with multiple timeframes (5d, 1mo, 3mo, 6mo, 1y)
+- **Stock Details** - Comprehensive company information including:
+  - Market capitalization
+  - P/E ratio (F/K oranı)
+  - EPS (Hisse başına kazanç)
+  - Dividend yield (Temettü verimi)
+  - Beta coefficient
+  - 52-week high/low range
+  - Sector and industry classification
+  - Company description
+- **Dedicated Stock Pages** - Full-page analysis for each stock
 
 ---
 
@@ -109,7 +123,8 @@ npm start
 - **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first styling
 
 ### Libraries
-- **[borsa-api](https://www.npmjs.com/package/borsa-api)** - BIST data provider
+- **[borsa-api v1.2.0](https://www.npmjs.com/package/borsa-api)** - BIST data provider with TypeScript support
+- **[Recharts](https://recharts.org/)** - Composable charting library
 - **[Lucide React](https://lucide.dev/)** - Beautiful icon set
 - **[Next.js Image](https://nextjs.org/docs/api-reference/next/image)** - Optimized images
 

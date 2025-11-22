@@ -1,9 +1,10 @@
 'use client';
 
-import { TrendingUp, TrendingDown, Star, GitCompare } from 'lucide-react';
+import { TrendingUp, TrendingDown, Star, GitCompare, ExternalLink } from 'lucide-react';
 import { getLogoWithFallback } from '@/lib/logo-utils';
 import { useFavorites } from '@/lib/favorites-context';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 interface StockCardProps {
@@ -32,7 +33,7 @@ export default function StockCard({ stock }: StockCardProps) {
   };
 
   return (
-    <div className={`bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border transition-all hover:shadow-lg hover:shadow-gray-200/50 dark:hover:shadow-slate-900/50 ${
+    <div className={`bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border transition-all hover:shadow-lg hover:shadow-gray-200/50 dark:hover:shadow-slate-900/50 relative group ${
       isInCompare(stock.symbol) 
         ? 'border-blue-500 dark:border-blue-500 ring-2 ring-blue-500/20' 
         : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600'
@@ -106,12 +107,20 @@ export default function StockCard({ stock }: StockCardProps) {
         </div>
 
         <div className="pt-2 border-t border-gray-200 dark:border-slate-700">
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-sm mb-3">
             <span className="text-gray-600 dark:text-slate-400">Hacim</span>
             <span className="text-gray-900 dark:text-slate-300 font-medium">
               {stock.volume.toLocaleString('tr-TR')}
             </span>
           </div>
+          
+          <Link 
+            href={`/stock/${stock.symbol}`}
+            className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors text-sm font-medium"
+          >
+            <span>Detaylı Analiz</span>
+            <ExternalLink className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </div>

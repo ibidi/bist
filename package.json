@@ -1,6 +1,6 @@
 {
   "name": "borsa-dashboard",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Modern Turkish Stock Market (BIST) dashboard built with Next.js and borsa-api",
   "author": "ibidi",
   "private": true,
@@ -11,7 +11,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "borsa-api": "^1.1.0",
+    "borsa-api": "^1.2.0",
     "lucide-react": "^0.554.0",
     "next": "16.0.3",
     "react": "19.2.0",
